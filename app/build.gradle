@@ -1,0 +1,68 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'// λ表达式
+apply plugin: 'com.neenbedankt.android-apt'
+
+
+def cfg = rootProject.ext.configuration // 配置
+def libs = rootProject.ext.libraries // 库
+
+android {
+    compileSdkVersion cfg.compileSdkVersion
+    buildToolsVersion cfg.buildToolsVersion
+
+    defaultConfig {
+        applicationId cfg.package
+        minSdkVersion cfg.minSdkVersion
+        targetSdkVersion cfg.targetSdkVersion
+        versionCode cfg.versionCode
+        versionName cfg.versionName
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile "com.android.support:appcompat-v7:${libs.supportVersion}"
+
+    compile "com.squareup.retrofit2:retrofit:${libs.retrofit}"
+    compile 'com.squareup.okhttp3:logging-interceptor:3.1.2'
+    compile "com.squareup.retrofit2:converter-gson:${libs.retrofit}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${libs.retrofit}"
+
+    compile "io.reactivex:rxandroid:${libs.rxandroid}"
+    compile "io.reactivex:rxjava:${libs.rxjava}"
+
+    compile "com.jakewharton:butterknife:${libs.butterknife}"
+    apt "com.jakewharton:butterknife-compiler:${libs.butterknife}"
+
+    compile "com.orhanobut:logger:${libs.logger}"
+}

@@ -1,0 +1,24 @@
+/**
+ * 统一管理版本号
+ */
+ext {
+    configuration = [
+            package          : "com.jsqix.dq.mvp.retrofit.rxjava",
+            buildToolsVersion: "24.0.0",
+            compileSdkVersion: 24,
+            minSdkVersion    : 15,
+            targetSdkVersion : 24,
+            versionCode      : 1,
+            versionName      : "1.0",
+    ]
+
+    libraries = [
+            supportVersion: "24.0.0",
+            retrofit      : "2.1.0",
+            rxandroid     : "1.2.1",
+            rxjava        : "1.1.6",
+            butterknife   : "8.2.1",
+            logger        : "1.15"
+
+    ]
+}
