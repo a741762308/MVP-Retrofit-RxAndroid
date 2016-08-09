@@ -7,8 +7,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.jsqix.dq.mvp.retrofit.rxjava.R;
-import com.jsqix.dq.mvp.retrofit.rxjava.data.api.Api;
-import com.jsqix.dq.mvp.retrofit.rxjava.data.api.Md5;
 import com.jsqix.dq.mvp.retrofit.rxjava.data.bean.IpInfo;
 import com.jsqix.dq.mvp.retrofit.rxjava.data.bean.UserBean;
 import com.jsqix.dq.mvp.retrofit.rxjava.model.LoginModel;
@@ -52,8 +50,9 @@ public class LoginActivity extends BaseActivity<LoginPresent, LoginModel> implem
 
     @OnClick(R.id.btn_submit)
     void submit() {
-        mPresenter.login(inputName.getText().toString(), Md5.getMD5(inputPass.getText().toString() + Api.PSW_KEY, Api.UTF_8));
+//        mPresenter.login(inputName.getText().toString(), Md5.getMD5(inputPass.getText().toString() + Api.PSW_KEY, Api.UTF_8));
 //        mPresenter.getIpInfo("221.224.198.229");
+        mPresenter.uploadHead("/sdcard/DCIM/IMG_1482018674.jpg","10");
     }
 
 
@@ -66,5 +65,10 @@ public class LoginActivity extends BaseActivity<LoginPresent, LoginModel> implem
     public void getIpSucess(IpInfo ipInfo) {
         Logger.d("");
         resultContent.setText(new Gson().toJson(ipInfo));
+    }
+
+    @Override
+    public void uploadSucess() {
+
     }
 }

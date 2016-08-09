@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -20,6 +21,7 @@ public class Api {
     public static final String BASE_URL = "http://dw.jsqix.com/api/"/*"http://ip.taobao.com/"*/;
     public final static String PARA_KEY = "1732d45564733ae7ab7b7175cdd16071";
     public final static String PSW_KEY = "4d3bb9c3e6bb7d38ef0270050de8edc9";
+    public final static MediaType TYPE_IMAGE = MediaType.parse("image/*");
     public final static String UTF_8 = "UTF-8";
     public static final int DEFAULT_TIMEOUT = 30;
 

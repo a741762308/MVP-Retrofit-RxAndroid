@@ -42,8 +42,8 @@ public interface ApiService {
      */
 
     @Multipart
-    @POST("register")
-    Observable<UserBean> registerUser(@Part MultipartBody.Part photo, @Part("acct") RequestBody username, @Part("pwd") RequestBody password);
+    @POST("uptUserHeadImg")
+    Observable<UserBean> uploadHead(@Part MultipartBody.Part photo, @Part("uid") RequestBody userId, @Part("hmac") RequestBody hmac);
 
     /**
      * 多文件上传
@@ -55,5 +55,5 @@ public interface ApiService {
      */
     @Multipart
     @POST("userLogin")
-    Observable<UserBean> registerUser(@PartMap Map<String, RequestBody> params, @Part("acct") RequestBody username, @Part("pwd") RequestBody password);
+    Observable<UserBean> registerUser(@PartMap Map<String, RequestBody> params, @Part("acct") RequestBody username, @Part("pwd") RequestBody password, @Part("hmac") RequestBody hmac);
 }

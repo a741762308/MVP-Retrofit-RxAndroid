@@ -1,10 +1,17 @@
 package com.jsqix.dq.mvp.retrofit.rxjava.present;
 
 import com.jsqix.dq.mvp.retrofit.rxjava.C;
+import com.jsqix.dq.mvp.retrofit.rxjava.data.api.Api;
+import com.jsqix.dq.mvp.retrofit.rxjava.data.api.Md5;
 import com.jsqix.dq.mvp.retrofit.rxjava.data.bean.IpInfo;
 import com.jsqix.dq.mvp.retrofit.rxjava.ui.contact.LoginContact;
 import com.orhanobut.logger.Logger;
 
+import java.io.File;
+import java.util.TreeMap;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Observer;
 
 /**
@@ -17,7 +24,7 @@ public class LoginPresent extends LoginContact.Presenter {
         mRxManager.add(mModel.login(name, pass).subscribe(user -> {
                     mRxManager.post(C.EVENT_LOGIN, user);
                     mView.loginSuccess(user);
-                }, e -> mView.showMsg("登录失败!")
+                }, throwable -> mView.showMsg("登录失败!")
         ));
     }
 
@@ -42,6 +49,20 @@ public class LoginPresent extends LoginContact.Presenter {
             }
         });
 
+    }
+
+    @Override
+    public void uploadHead(String path, String uid) {
+        /*添加加密字符串*/
+        TreeMap<String, Object> map = new TreeMap<>();
+        map.put(uid, uid);
+        String hmac = Md5.getSign(map, Api.PARA_KEY);
+
+        File file = new File(path);
+        RequestBody fileBody = RequestBody.create(Api.TYPE_IMAGE, file);
+        MultipartBody.Part photo = MultipartBody.Part.createFormData("img", file.getName(), fileBody);
+        mModel.uploadHead(photo, RequestBody.create(null, uid), RequestBody.create(null, hmac)).subscribe(baseBean ->
+                mView.uploadSucess(), throwable -> mView.showMsg("上传失败"));
     }
 
     @Override

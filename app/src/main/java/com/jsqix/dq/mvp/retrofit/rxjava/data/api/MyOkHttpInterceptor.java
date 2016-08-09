@@ -15,7 +15,7 @@ import okhttp3.Response;
 
 /**
  * Created by dq on 2016/8/8.
- * 拦截器
+ * 拦截器  参数加密
  */
 public class MyOkHttpInterceptor implements Interceptor {
     @Override
@@ -34,33 +34,39 @@ public class MyOkHttpInterceptor implements Interceptor {
                     map.put(key, value);
                 }
                 String sign = Md5.getSign(map, Api.PARA_KEY);
-                url=url.newBuilder().addQueryParameter("hmac", sign).build();
+                url = url.newBuilder().addQueryParameter("hmac", sign).build();
                 requestBuilder.url(url);
-                requestBuilder.method(original.method(),body);
+                requestBuilder.method(original.method(), body);
             }
 
         } else if (original.method().equals("POST")) {
-            if(body instanceof FormBody){
-                FormBody oldBody= (FormBody) body;
-                FormBody.Builder newBody=new FormBody.Builder();
+            if (body instanceof FormBody) {
+                FormBody oldBody = (FormBody) body;
+                FormBody.Builder newBody = new FormBody.Builder();
                 TreeMap<String, Object> map = new TreeMap<>();
-                for (int i = 0;i<oldBody.size();i++){
+                for (int i = 0; i < oldBody.size(); i++) {
                     String key = oldBody.name(i);
                     String value = oldBody.value(i);
-                    newBody.add(key,value);
-                    map.put(key,value);
+                    newBody.add(key, value);
+                    map.put(key, value);
                 }
                 String sign = Md5.getSign(map, Api.PARA_KEY);
-                newBody.add("hmac",sign);
-                requestBuilder.method(original.method(),newBody.build());
-            }
-            else if(body instanceof MultipartBody){
-//                MultipartBody oldBody= (MultipartBody) body;
-//                int size=oldBody.size();
-//                for(int i=0;i<size;i++)
-//                {
-//                    MultipartBody.Part part=oldBody.part(i);
+                newBody.add("hmac", sign);
+                requestBuilder.method(original.method(), newBody.build());
+            } else if (body instanceof MultipartBody) {
+                //图片不加密
+                //无法获取part里面的内容，故只能在外卖传递加密串
+//                MultipartBody oldBody = (MultipartBody) body;
+//                MultipartBody.Builder newBody = new MultipartBody.Builder();
+//                TreeMap<String, Object> map = new TreeMap<>();
+//                int size = oldBody.size();
+//                for (int i = 0; i < size; i++) {
+//                    MultipartBody.Part part = oldBody.part(i);
+//                    newBody.addPart(part);
 //                }
+//                String sign = Md5.getSign(map, Api.PARA_KEY);
+//                newBody.addFormDataPart("hmac",sign);
+//                requestBuilder.method(original.method(), newBody.build());
             }
 
         }
